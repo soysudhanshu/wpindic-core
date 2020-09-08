@@ -1,0 +1,3 @@
+class CaretPosition {
+    constructor (original)
+}
