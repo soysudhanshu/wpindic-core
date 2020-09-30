@@ -41,7 +41,7 @@ class HindiTransliterator {
     }
 
     static _getTransliteration(word){
-        return GoogleTransliterator.transliterate(word, 'ur');
+        return GoogleTransliterator.transliterate(word, 'hi');
     }
 }
 
