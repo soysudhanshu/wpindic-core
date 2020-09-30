@@ -16,6 +16,12 @@ class Writer {
         this.language = language;
         this.caret = new InputCaret(this.element);
         this.element.addEventListener('keydown', this.processKeyStrokes.bind(this));
+
+        /**
+         * Waiting queue for words 
+         * which needs to be transliterated.
+         */
+        this.transliterationQueue = [];
     }
 
     /**
@@ -35,9 +41,21 @@ class Writer {
          * Halt execution is space is not entered.
          */
         if ((/\s/.test(inputChar) || inputChar === 'Enter')) {
-            this._transliterate();
+            /**
+             * We will add every word to queue as it is 
+             * being typed and then we will loop over 
+             * them one by one and transliterate them.
+             */
+            this._updateTransliterationQueue();
         }
+    }
 
+    /**
+     * Adds last typed word into transliteration queue.
+     */
+    _updateTransliterationQueue(){
+        const word = this.caret.lastWord();
+        this.transliterationQueue.push(word);
     }
 
     async _transliterate() {
