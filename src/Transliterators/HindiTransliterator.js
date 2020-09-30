@@ -1,12 +1,11 @@
 import GoogleTransliterator from '../GoogleTransliterator.js';
 
-const transliterator = new GoogleTransliterator('hi');
 const cache = {};
 
 class HindiTransliterator {
     static transliterate(word) {
         return new Promise((resolve, reject) => {
-            transliterator.transliterate(word)
+            HindiTransliterator._getTransliteration(word)
                 .then(HindiTransliterator._addToCache)
                 .then(transliteration => resolve(transliteration.transliterations[0]))
                 .catch(error => reject(error));
@@ -15,7 +14,7 @@ class HindiTransliterator {
 
     static suggest(word) {
         return new Promise((resolve, reject) => {
-            transliterator.transliterate(word)
+            HindiTransliterator._getTransliteration(word)
                 .then(HindiTransliterator._addToCache)
                 .then(transliteration => resolve(transliteration.transliterations))
                 .catch(error => reject(error));
@@ -41,7 +40,9 @@ class HindiTransliterator {
         return transliteration;
     }
 
-
+    static _getTransliteration(word){
+        return GoogleTransliterator.transliterate(word, 'ur');
+    }
 }
 
 export default HindiTransliterator;

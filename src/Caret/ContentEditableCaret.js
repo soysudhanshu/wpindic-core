@@ -1,11 +1,11 @@
-import Caret from "./caret.js";
-import * as helper from "./helper/nodes.js";
+import * as helper from './helpers.js';
+import CaretInterface from "./CaretInterface.js";
 /**
  * Class provides an interface to manipulate Caret inside a content editable area.
  * @constructor
  * @param {Element} element HTML Element
  */
-export default class Content_Editable_Caret extends Caret {
+export default class ContentEditableCaret extends CaretInterface {
   lastWord() {
     const caret = this.caretInfo();
 
@@ -47,7 +47,7 @@ export default class Content_Editable_Caret extends Caret {
     const wordLength = lastWord.length;
 
     const wordInfo = {
-      word: lastWord,
+      text: lastWord,
       node: node.current,
       position: {
         start: trimmedContent.length - wordLength,
@@ -58,11 +58,11 @@ export default class Content_Editable_Caret extends Caret {
     return wordInfo;
   }
 
-  replace(replace, start, end, node) {
+  replace(replace, wordInfo) {
     // Select
     const range = new Range();
-    range.setStart(node, start);
-    range.setEnd(node, end);
+    range.setStart(wordInfo.node, wordInfo.position.start);
+    range.setEnd(wordInfo.node, wordInfo.position.end);
 
     // Replace
     range.deleteContents();

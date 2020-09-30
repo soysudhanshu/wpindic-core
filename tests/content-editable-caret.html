@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+</head>
+<body>
+    <div contenteditable="true" id='editor'></div>
+    <style>
+        div:not(.tribute-container),textarea{
+            width:100vw;
+            height:45vh;
+            padding: 10px;
+            box-sizing: border-box;
+            background: #fff;
+            box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+        }
+
+        div.tribute-container{
+            z-index: 1000000;;
+        }
+    </style>
+    <script src='../dist/main.js'></script>
+    <script>
+        const editorArea = document.querySelector('#editor');
+        const editor = new Writer(editorArea);
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+</head>
+
+<body>
+    <p>Word you type should be replaced with hello </p>
+    <textarea id="editor"></textarea>
+    <style>
+        body>div:not(.tribute-container),
+        body>textarea,
+        body>iframe {
+            width: 100vw;
+            height: 45vh;
+            padding: 10px;
+            box-sizing: border-box;
+            background: #fff;
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.1/tinymce.min.js"></script>
+    <script src="../dist/main.js"></script>
+    <script>
+        console.log(Writer);
+        tinymce.init({
+            selector: 'textarea'
+        }).then(() => {
+            const editorArea = document.querySelector('#editor_ifr');
+            
+            const editor = new Writer(editorArea);
+        });
+
+    </script>
+
+</body>
+
+</html>

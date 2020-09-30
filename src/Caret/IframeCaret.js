@@ -1,10 +1,10 @@
-import Content_Editable_Caret from "./content-editable-caret.js";
+import ContentEditableCaret from "./ContentEditableCaret.js";
 /**
  * Class provides an interface to manipulate Caret inside a content editable area.
  * @constructor
  * @param {Element} element HTML Element
  */
-export default class iFrame_Caret extends Content_Editable_Caret {
+export default class iFrameCaret extends ContentEditableCaret {
 
   caretInfo() {
     const selection = this.element.contentWindow.getSelection();
@@ -39,4 +39,4 @@ export default class iFrame_Caret extends Content_Editable_Caret {
     return caret;
   }
 }
-window.iFrame_Caret = iFrame_Caret;
+window.iFrameCaret = iFrameCaret;

@@ -88,7 +88,7 @@ export default class InputCaret extends CaretInterface {
    * @return {void}
    */
 
-  replace(replacement, start, end) {
-    this.element.setRangeText(replacement, start, end);
+  replace(replacement, word) {
+    this.element.setRangeText(replacement, word.start, word.end);
   }
 }
