@@ -2,6 +2,7 @@ import HindiTransliterator from "./Transliterators/HindiTransliterator.js";
 import Tribute from "tributejs";
 import { caretChooser } from "./Caret/helpers.js";
 import iFrameCaret from "./Caret/iFrameCaret.js";
+import InputCaret from "./Caret/InputCaret.js";
 
 class Writer {
     /**
