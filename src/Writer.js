@@ -23,28 +23,10 @@ class Writer {
                 "keydown",
                 this.processKeyStrokes.bind(this)
             );
-            
+
         } else {
             this.element.addEventListener('keydown', this.processKeyStrokes.bind(this));
         }
-
-        
-        this.tribute = new Tribute({
-            values: this._suggestTransliterations.bind(this),
-            trigger: '',
-            lookup: (values, selected) => {
-                console.log(values, selected);
-                return selected + values.value;
-            },
-            menuItemTemplate: function (item) {
-                return item.original.value;
-            },
-            iframe,
-            noMatchTemplate: () => {
-                return `<span> Done </span>`;
-            }
-        });
-        this.tribute.attach(this.element);
     }
 
     /**
@@ -63,12 +45,7 @@ class Writer {
         /**
          * Halt execution is space is not entered.
          */
-        if (inputChar === 'Backspace') {
-            // event.preventDefault();
-            // this._suggestTransliterations(event);
-            this.tribute.showMenuForCollection(this.element);
-        }
-        else if ((/\s/.test(inputChar) || inputChar === 'Enter') && !this.tribute.isActive) {
+        if ((/\s/.test(inputChar) || inputChar === 'Enter')) {
             this._transliterate();
         }
 
@@ -78,19 +55,6 @@ class Writer {
         const word = this.caret.lastWord();
         const transliteration = await HindiTransliterator.transliterate(word.text);
         this.caret.replace(transliteration, word);
-    }
-
-    /**
-     * 
-     * @param {KeyboardEvent} event 
-     */
-    async _suggestTransliterations(text, cb) {
-        console.log(text);
-        // const word = this.caret.lastWord();
-        const suggestions = HindiTransliterator.suggestAlternative(text);
-        // const suggestions = await HindiTransliterator.suggest('apple');
-        const tributeData = suggestions.map(text => ({ key: text, value: text }));
-        cb(tributeData);
     }
 }
 
