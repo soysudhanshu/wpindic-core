@@ -14,19 +14,8 @@ class Writer {
         element.writer = this;
         this.element = element;
         this.language = language;
-        this.caret = new (caretChooser(this.element))(this.element);
-        let iframe = null;
-        if (this.caret instanceof iFrameCaret) {
-            iframe = this.element;
-
-            this.element.contentWindow.addEventListener(
-                "keydown",
-                this.processKeyStrokes.bind(this)
-            );
-
-        } else {
-            this.element.addEventListener('keydown', this.processKeyStrokes.bind(this));
-        }
+        this.caret = new InputCaret(this.element);
+        this.element.addEventListener('keydown', this.processKeyStrokes.bind(this));
     }
 
     /**
