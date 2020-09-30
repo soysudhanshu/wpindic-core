@@ -94,4 +94,4 @@ class Writer {
     }
 }
 
-window.Writer = Writer;
+export default Writer;
