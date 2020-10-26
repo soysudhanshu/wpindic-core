@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>How to test</h1>
+    <ol>
+        <li>Type as you normally word.</li>
+        <li>Move back and insert a word.</li>
+        <li>Move back and remove a word.</li>
+        <li>Move back and paste.</li>
+        <li>Move backwards and forwards using arrow keys. - Must show word before the inserter.</li>
+    </ol>
+    <div id='test-area'>
+        <textarea>Type here...</textarea>
+        <div>
+            <h2>
+                Last typed : <br> `<output></output>`
+            </h2>
+        </div>
+    </div>
+
+    <script src='../../dist/main.js'></script>
+    <script>
+        const inputArea = document.querySelector('textarea');
+        const outputArea = document.querySelector('output');
+        const caret = new window.wpindic.InputCaret(inputArea);
+
+        inputArea.addEventListener('keyup', () => {
+            const word = caret.lastWord();
+            outputArea.innerText = word.text;
+        });
+    </script>
+    <style>
+        #test-area{
+            display: grid;
+            height: 300px;
+            width:70%;
+            grid-template-columns: 1fr 1fr;
+            grid-gap:10px;
+            margin: auto;
+        }
+        textarea {
+            padding: 10px;
+            box-sizing: border-box;
+            background: #fff;
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+            width: 100%;
+            border:0px;
+        }
+        .tribute-container ul{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .highlight{
+            background: lightblue;
+        }
+    </style>
+</body>
+
+</html>
