@@ -13,7 +13,6 @@ export default class InputCaret extends CaretInterface {
   constructor(element) {
     super();
     this.element = element;
-    
   }
   
   /**
@@ -23,20 +22,34 @@ export default class InputCaret extends CaretInterface {
    */
   lastWord() {
     const caret = this.caretInfo();
+    const caretPosition = caret.position;
     
     // Collapsed caret is required
     if(!caret.isCollapsed){ return null;}
 
+    /**
+     * Extract text contents of the element.
+     * @var {string} text
+     */
     const text = this.element.value;
-    const trailingTrimmedText = text.trimEnd();
-
-    const wordEndOffset = trailingTrimmedText.length;
 
     /**
-     * Getting start offset
+     * Here, we are going to extract last word to
+     * the left of text inserter. For that 
+     * 
+     * 1. We'll extract portion of the string until current caret
+     * position.
+     * 2. We trim off string end to keep only word at the end.
+     * 3. We spilt string based on spaces and return last element as the
+     * word.
      */
-    const lastWord = trailingTrimmedText.split(/\s/g).pop();
-    
+    const textUntilInserter = text.substr(0, caretPosition.end).trimEnd();
+    const lastWord = textUntilInserter.split(/\s/g).pop();
+
+    /**
+     * We calculate word start and end offsets.
+     */
+    const wordEndOffset = textUntilInserter.length;
     let wordStartOffset = wordEndOffset - lastWord.length;
     
     if(wordEndOffset < 0){
