@@ -63,14 +63,43 @@ class Writer {
         this.transliterationQueue.push(word);
     }
 
+    /**
+     * Updates position of words in the queue 
+     * after replacement by transliterator.
+     * 
+     * Often times transliterated strings have 
+     * different lengths. This functions corrects
+     * those length errors. Iterating over the queue 
+     * and changing offsets.
+     * 
+     * @param {int} after Words with starting offset greater than 
+     * this will see shift in position.
+     * 
+     * @param {int} change Position shift of word.
+     */
+    _updateQueueWordPositions(after, change){
+        this.transliterationQueue.forEach(word => {
+            /**
+             * We only modify words which come 
+             * after the word we transliterated.
+             */
+            if(word.start >= after){
+                word.start += change;
+                word.end += change;
+            }
+        });
+    }
+
     async _transliterate() {
 
         const isTransliterationQueueEmpty = this.transliterationQueue.length === 0;
 
         if(!isTransliterationQueueEmpty){
-            const word = this.transliterationQueue.shift();
+            const word = this.transliterationQueue.shift();        
             const transliteration = await HindiTransliterator.transliterate(word.text);
             this.caret.replace(transliteration, word);
+            const change = transliteration.length  - word.text.length;
+            this._updateQueueWordPositions(word.end, change);
         }
 
         /**
