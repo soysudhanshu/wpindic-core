@@ -3,12 +3,44 @@ import Tribute from "tributejs";
 import { caretChooser } from "./Caret/helpers.js";
 import iFrameCaret from "./Caret/iFrameCaret.js";
 import InputCaret from "./Caret/InputCaret.js";
+import BanglaTransliterator from "./Transliterators/BanglaTransliterator.js";
+import GujratiTransliterator from "./Transliterators/GujratiTransliterator.js";
+import KannadaTransliterator from "./Transliterators/KannadaTransliterator.js";
+import MalyalamTransliterator from "./Transliterators/MalyalamTransliterator.js";
+import NepaliTransliterator from "./Transliterators/NepaliTransliterator.js";
+import OriyaTransliterator from "./Transliterators/OriyaTransliterator.js";
+import PunjabiTransliterator from "./Transliterators/PunjabiTransliterator.js";
+import SanskritTransliterator from "./Transliterators/SanskritTransliterator.js";
+import SinhalaTransliterator from "./Transliterators/SinhalaTransliterator.js";
+import TamilTransliterator from "./Transliterators/TamilTransliterator.js";
+import TelguTransliterator from "./Transliterators/TelguTransliterator.js";
+import UrduTransliterator from "./Transliterators/UrduTransliterator.js";
+import MarathiTransliterator from "./Transliterators/MarathiTransliterator.js";
+
+const supportedLanguageTransliterators = [
+    BanglaTransliterator,
+    GujratiTransliterator,
+    HindiTransliterator,
+    KannadaTransliterator,
+    MarathiTransliterator,
+    MalyalamTransliterator,
+    NepaliTransliterator,
+    OriyaTransliterator,
+    PunjabiTransliterator,
+    SanskritTransliterator,
+    SinhalaTransliterator,
+    TamilTransliterator,
+    TelguTransliterator,
+    UrduTransliterator
+];
 
 class Writer {
     /**
+     * Enables transliteration writing for form input elements
+     * for indic languages.
      * 
-     * @param {HTMLElement} element 
-     * @param {*} language 
+     * @param {HTMLElement} element Form input element to use for transliterations.
+     * @param {*} language ISO 639-1 code of indic language.
      */
     constructor(element, language = 'bn') {
         element.writer = this;
@@ -16,6 +48,23 @@ class Writer {
         this.language = language;
         this.caret = new InputCaret(this.element);
         this.element.addEventListener('keydown', this.processKeyStrokes.bind(this));
+
+        const availableTransliterators  = supportedLanguageTransliterators
+            .filter(transliterator => language === transliterator.getLang());
+
+        const isLanguageSupported = availableTransliterators.length !== 0;
+        
+        if(!isLanguageSupported){
+            throw new Error(`${language} is not supported.`);
+        }
+
+        /**
+         * Transliterator which will be used for transliterating 
+         * user input.
+         * 
+         * We pick first transliterator for transliterations. 
+         */
+        this.transliterator = availableTransliterators.shift();
 
         /**
          * Waiting queue for words 
@@ -96,7 +145,7 @@ class Writer {
 
         if(!isTransliterationQueueEmpty){
             const word = this.transliterationQueue.shift();        
-            const transliteration = await HindiTransliterator.transliterate(word.text);
+            const transliteration = await this.transliterator.transliterate(word.text);
             this.caret.replace(transliteration, word);
             const change = transliteration.length  - word.text.length;
             this._updateQueueWordPositions(word.end, change);
