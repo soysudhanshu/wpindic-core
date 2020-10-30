@@ -1,8 +1,9 @@
 import GoogleTransliterator from '../GoogleTransliterator.js';
+import LanguageTransliteratorInterface from '../Interfaces/LanguageTransliteratorInterface.js';
 
 const cache = {};
 
-class HindiTransliterator {
+class HindiTransliterator  extends LanguageTransliteratorInterface {
     static transliterate(word) {
         return new Promise((resolve, reject) => {
             HindiTransliterator._getTransliteration(word)
@@ -42,6 +43,10 @@ class HindiTransliterator {
 
     static _getTransliteration(word){
         return GoogleTransliterator.transliterate(word, 'hi');
+    }
+
+    static getLang(){
+        return 'hi';
     }
 }
 
