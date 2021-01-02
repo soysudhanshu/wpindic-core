@@ -76,6 +76,24 @@ class Writer {
          * Being transliteration.
          */
         setTimeout(this._transliterate.bind(this), 1000);
+
+        this.suggestionEngine = new Tribute({
+            values: this._suggestTransliterations.bind(this),
+            trigger: '',
+            lookup: (values, selected) => {
+                return selected + values.value;
+            },
+            menuItemTemplate: function (item) {
+                return item.original.value;
+            },
+            noMatchTemplate : function (item) {
+                return '';
+            }
+        });
+
+        this.suggestionEngine.attach(this.element);
+
+        this.lastInputKey = null;
     }
 
     /**
@@ -94,14 +112,18 @@ class Writer {
         /**
          * Halt execution is space is not entered.
          */
-        if ((/\s/.test(inputChar) || inputChar === 'Enter')) {
+        if ((/\s/.test(inputChar) || inputChar === 'Enter') && !this.suggestionEngine.isActive) {
             /**
              * We will add every word to queue as it is 
              * being typed and then we will loop over 
              * them one by one and transliterate them.
              */
             this._updateTransliterationQueue();
+        }else if (inputChar === 'Backspace') {
+            this.suggestionEngine.showMenuForCollection(this.element);
         }
+
+        this.lastInputKey = inputChar;
     }
 
     /**
@@ -165,6 +187,17 @@ class Writer {
          * We are not going to wait here 
          */
         setTimeout(this._transliterate.bind(this), waitTime);
+    }
+
+    /**
+     * Suggests alternative transliteration for given word.
+     * @param {KeyboardEvent} event 
+     */
+    async _suggestTransliterations(text, cb) {
+        const word = this.caret.lastWord();
+        const suggestions = this.transliterator.suggestAlternative(word.text);
+        const tributeData = suggestions.map(text => ({ key: text, value: text }));
+        cb(tributeData);
     }
 }
 
