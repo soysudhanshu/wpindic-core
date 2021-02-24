@@ -1,4 +1,4 @@
-import TransliteratorInterface from "./TransliterateInterface";
+import TransliteratorInterface from "./TransliterateInterface.js";
 
 class LanguageTransliteratorInterface extends TransliteratorInterface{
     static getLang(){
