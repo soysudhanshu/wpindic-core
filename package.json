@@ -1,13 +1,13 @@
 {
-  "name": "core",
-  "version": "1.0.0",
-  "description": "",
+  "name": "wp-indic",
+  "version": "0.0.1",
+  "description": "Writer for Indic Languages",
   "main": "index.js",
   "scripts": {
     "test": "jest"
   },
   "type": "module",
-  "author": "",
+  "author": "soysudhanshu",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.20.0",
@@ -18,5 +18,23 @@
     "@babel/preset-env": "^7.11.5",
     "babel-jest": "^26.3.0",
     "jest": "^26.4.2"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soysudhanshu/wpindic-core.git"
+  },
+  "keywords": [
+    "hindi",
+    "bangla",
+    "assamese",
+    "tamil",
+    "telgu"
+  ],
+  "bugs": {
+    "url": "https://github.com/soysudhanshu/wpindic-core/issues"
+  },
+  "homepage": "https://github.com/soysudhanshu/wpindic-core#readme"
 }
