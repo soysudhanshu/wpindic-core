@@ -4,7 +4,9 @@
   "description": "Writer for Indic Languages",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build" : "tsc",
+    "build-watch": "tsc --watch"
   },
   "author": "soysudhanshu",
   "license": "ISC",
