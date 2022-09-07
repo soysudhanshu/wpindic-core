@@ -1,8 +1,8 @@
 {
   "name": "wp-indic",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Writer for Indic Languages",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "jest"
   },
