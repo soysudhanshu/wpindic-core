@@ -169,7 +169,7 @@ class Writer {
             const word = this.transliterationQueue.shift();
             const transliteration = await this.transliterator.transliterate(word.text);
 
-            if (typeof transliteration !== "undefined") {
+            if (typeof transliteration !== "undefined" && this._inputValueIsUnchanged(word)) {
                 this.caret.replace(transliteration, word);
                 const change = transliteration.length - word.text.length;
                 this._updateQueueWordPositions(word.end, change);
@@ -190,6 +190,15 @@ class Writer {
          * We are not going to wait here
          */
         setTimeout(this._transliterate.bind(this), waitTime);
+    }
+
+    _inputValueIsUnchanged(word) {
+        /**
+        * Verify same word exists in the
+        * input before replacing it.
+        */
+
+        return word.text === this.element.value.substring(word.start, word.end);
     }
 
     /**
