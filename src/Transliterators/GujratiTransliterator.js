@@ -3,7 +3,7 @@ import LanguageTransliteratorInterface from '../Interfaces/LanguageTransliterato
 
 const cache = {};
 
-class GujratiTransliterator  extends LanguageTransliteratorInterface {
+class GujratiTransliterator extends LanguageTransliteratorInterface {
     static transliterate(word) {
         return new Promise((resolve, reject) => {
             this._getTransliteration(word)
@@ -41,11 +41,12 @@ class GujratiTransliterator  extends LanguageTransliteratorInterface {
         return transliteration;
     }
 
-    static _getTransliteration(word){
-        return GoogleTransliterator.transliterate(word, 'gu');
+    static _getTransliteration(word) {
+        const transliterator = new GoogleTransliterator('gu');
+        return transliterator.transliterate(word);
     }
 
-    static getLang(){
+    static getLang() {
         return 'gu';
     }
 }

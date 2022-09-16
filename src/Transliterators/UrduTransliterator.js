@@ -3,7 +3,7 @@ import LanguageTransliteratorInterface from '../Interfaces/LanguageTransliterato
 
 const cache = {};
 
-class UrduTransliterator extends LanguageTransliteratorInterface{
+class UrduTransliterator extends LanguageTransliteratorInterface {
     static transliterate(word) {
         return new Promise((resolve, reject) => {
             this._getTransliteration(word)
@@ -42,10 +42,11 @@ class UrduTransliterator extends LanguageTransliteratorInterface{
     }
 
     static _getTransliteration(word) {
-        return GoogleTransliterator.transliterate(word, 'ur');
+        const transliterator = new GoogleTransliterator('ur');
+        return transliterator.transliterate(word);
     }
 
-    static getLang(){
+    static getLang() {
         return 'ur';
     }
 }

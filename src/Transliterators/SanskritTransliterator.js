@@ -3,7 +3,7 @@ import LanguageTransliteratorInterface from '../Interfaces/LanguageTransliterato
 
 const cache = {};
 
-class SanskritTransliterator  extends LanguageTransliteratorInterface{
+class SanskritTransliterator extends LanguageTransliteratorInterface {
     static transliterate(word) {
         return new Promise((resolve, reject) => {
             this._getTransliteration(word)
@@ -41,11 +41,12 @@ class SanskritTransliterator  extends LanguageTransliteratorInterface{
         return transliteration;
     }
 
-    static _getTransliteration(word){
-        return GoogleTransliterator.transliterate(word, 'sa');
+    static _getTransliteration(word) {
+        const transliterator = new GoogleTransliterator('sa');
+        return transliterator.transliterate(word);
     }
 
-    static getLang(){
+    static getLang() {
         return 'sa';
     }
 }

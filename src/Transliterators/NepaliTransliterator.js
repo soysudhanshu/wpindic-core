@@ -3,7 +3,7 @@ import LanguageTransliteratorInterface from '../Interfaces/LanguageTransliterato
 
 const cache = {};
 
-class NepaliTransliterator  extends LanguageTransliteratorInterface {
+class NepaliTransliterator extends LanguageTransliteratorInterface {
     static transliterate(word) {
         return new Promise((resolve, reject) => {
             this._getTransliteration(word)
@@ -41,11 +41,12 @@ class NepaliTransliterator  extends LanguageTransliteratorInterface {
         return transliteration;
     }
 
-    static _getTransliteration(word){
-        return GoogleTransliterator.transliterate(word, 'ne');
+    static _getTransliteration(word) {
+        const transliterator = new GoogleTransliterator('ne');
+        return transliterator.transliterate(word);
     }
 
-    static getLang(){
+    static getLang() {
         return 'ne';
     }
 }

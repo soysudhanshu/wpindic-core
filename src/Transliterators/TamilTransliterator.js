@@ -3,7 +3,7 @@ import LanguageTransliteratorInterface from '../Interfaces/LanguageTransliterato
 
 const cache = {};
 
-class TamilTransliterator  extends LanguageTransliteratorInterface{
+class TamilTransliterator extends LanguageTransliteratorInterface {
     static transliterate(word) {
         return new Promise((resolve, reject) => {
             this._getTransliteration(word)
@@ -41,11 +41,12 @@ class TamilTransliterator  extends LanguageTransliteratorInterface{
         return transliteration;
     }
 
-    static _getTransliteration(word){
-        return GoogleTransliterator.transliterate(word, 'ta');
+    static _getTransliteration(word) {
+        const transliterator = new GoogleTransliterator('ta');
+        return transliterator.transliterate(word);
     }
 
-    static getLang(){
+    static getLang() {
         return 'ta';
     }
 }

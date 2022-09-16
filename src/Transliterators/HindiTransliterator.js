@@ -3,7 +3,7 @@ import LanguageTransliteratorInterface from '../Interfaces/LanguageTransliterato
 
 const cache = {};
 
-class HindiTransliterator  extends LanguageTransliteratorInterface {
+class HindiTransliterator extends LanguageTransliteratorInterface {
     static transliterate(word) {
         return new Promise((resolve, reject) => {
             HindiTransliterator._getTransliteration(word)
@@ -41,11 +41,12 @@ class HindiTransliterator  extends LanguageTransliteratorInterface {
         return transliteration;
     }
 
-    static _getTransliteration(word){
-        return GoogleTransliterator.transliterate(word, 'hi');
+    static _getTransliteration(word) {
+        const transliterator = new GoogleTransliterator('hi');
+        return transliterator.transliterate(word);
     }
 
-    static getLang(){
+    static getLang() {
         return 'hi';
     }
 }

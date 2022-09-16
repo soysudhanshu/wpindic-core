@@ -3,7 +3,7 @@ import LanguageTransliteratorInterface from '../Interfaces/LanguageTransliterato
 
 const cache = {};
 
-class KannadaTransliterator  extends LanguageTransliteratorInterface {
+class KannadaTransliterator extends LanguageTransliteratorInterface {
     static transliterate(word) {
         return new Promise((resolve, reject) => {
             this._getTransliteration(word)
@@ -41,11 +41,12 @@ class KannadaTransliterator  extends LanguageTransliteratorInterface {
         return transliteration;
     }
 
-    static _getTransliteration(word){
-        return GoogleTransliterator.transliterate(word, 'kn');
+    static _getTransliteration(word) {
+        const transliterator = new GoogleTransliterator('kn');
+        return transliterator.transliterate(word);
     }
 
-    static getLang(){
+    static getLang() {
         return 'kn';
     }
 }
