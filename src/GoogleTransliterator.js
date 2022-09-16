@@ -15,67 +15,60 @@ const supportedLanguages = [
 ];
 
 class GoogleTransliterator extends TransliteratorInterface {
-    /**
-     * Determine if language is support is not.
-     * @param {string} languageCode Two letter ISO 639-1 language code.
-     * @returns {boolean}
-     */
-    static isSupported(languageCode){
-        return supportedLanguages.includes(languageCode);
-    }
 
-    static transliterate(word, languageCode) {
-        if(!isString(word)){
-            throw new TypeError('Word must be string.');
-        }
-
-        if(!isString(languageCode)){
-            throw new TypeError('Lanuage code must be string.');
-        }
-
-        if(!word.trim().length === 0){
-            throw new TypeError('Transliteration word cannot be empty.')
-        }
-
-        if(!GoogleTransliterator.isSupported(languageCode)){
+    constructor(languageCode) {
+        super();
+        
+        if (!supportedLanguages.includes(languageCode)) {
             throw new TypeError(`Language code ${languageCode} is not supported.`);
         }
 
+        this.language = languageCode;
+    }
+
+    transliterate(word) {
+        if (!isString(word)) {
+            throw new TypeError('Word must be string.');
+        }
+
+        if (!word.trim().length === 0) {
+            throw new TypeError('Transliteration word cannot be empty.')
+        }
+
         return new Promise((resolve, reject) => {
-            this._getTransliteration(word, languageCode)
+            this._getTransliteration(word, this.language)
                 .then(this._parseResponse.bind(this))
                 .then(transliteration => resolve(transliteration))
                 .catch(error => reject(error))
         });
     }
 
-    static _getApiUrl(){
+    _getApiUrl() {
         return 'https://www.google.com/inputtools/request';
     }
 
-    static _getImeMethodForLanguage(languageCode){
-        return `transliteration_en_${languageCode}`;
+    _getImeMethod() {
+        return `transliteration_en_${this.language}`;
     }
 
-    static _getTransliteration(word, languageCode, suggestionCount = 5) {
+    _getTransliteration(word, suggestionCount = 5) {
         return axios({
             method: 'GET',
-            url: GoogleTransliterator._getApiUrl(),
+            url: this._getApiUrl(),
             params: {
                 text: word,
-                ime: GoogleTransliterator._getImeMethodForLanguage(languageCode),
+                ime: this._getImeMethod(),
                 num: suggestionCount
             },
             responseType: "json"
         }).then(response => response.data);
     }
 
-    static _parseResponse(responseJson) {
+    _parseResponse(responseJson) {
         const text = responseJson[1][0][0];
         const transliterations = responseJson[1][0][1];
         return new Transliteration(text, transliterations)
     }
-    
 }
 
 export default GoogleTransliterator;
