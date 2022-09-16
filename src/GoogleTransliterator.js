@@ -14,16 +14,20 @@ const supportedLanguages = [
     'te', 'ur'
 ];
 
+const TRANSLITERATE_API_URL = 'https://www.google.com/inputtools/request';
+
 class GoogleTransliterator extends TransliteratorInterface {
 
-    constructor(languageCode) {
+    constructor(languageCode, suggestionCount = 5) {
         super();
-        
+
         if (!supportedLanguages.includes(languageCode)) {
             throw new TypeError(`Language code ${languageCode} is not supported.`);
         }
 
         this.language = languageCode;
+        this.suggestionCount = suggestionCount;
+        this.imeMethod = `transliteration_en_${this.language}`;
     }
 
     transliterate(word) {
@@ -36,29 +40,21 @@ class GoogleTransliterator extends TransliteratorInterface {
         }
 
         return new Promise((resolve, reject) => {
-            this._getTransliteration(word, this.language)
+            this._getTransliteration(word)
                 .then(this._parseResponse.bind(this))
                 .then(transliteration => resolve(transliteration))
                 .catch(error => reject(error))
         });
     }
 
-    _getApiUrl() {
-        return 'https://www.google.com/inputtools/request';
-    }
-
-    _getImeMethod() {
-        return `transliteration_en_${this.language}`;
-    }
-
-    _getTransliteration(word, suggestionCount = 5) {
+    _getTransliteration(word) {
         return axios({
             method: 'GET',
-            url: this._getApiUrl(),
+            url: TRANSLITERATE_API_URL,
             params: {
                 text: word,
-                ime: this._getImeMethod(),
-                num: suggestionCount
+                ime: this.imeMethod,
+                num: this.suggestionCount,
             },
             responseType: "json"
         }).then(response => response.data);
