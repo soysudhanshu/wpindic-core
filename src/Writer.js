@@ -168,9 +168,12 @@ class Writer {
         if (!isTransliterationQueueEmpty) {
             const word = this.transliterationQueue.shift();
             const transliteration = await this.transliterator.transliterate(word.text);
-            this.caret.replace(transliteration, word);
-            const change = transliteration.length - word.text.length;
-            this._updateQueueWordPositions(word.end, change);
+
+            if (typeof transliteration !== "undefined") {
+                this.caret.replace(transliteration, word);
+                const change = transliteration.length - word.text.length;
+                this._updateQueueWordPositions(word.end, change);
+            }
         }
 
         /**
