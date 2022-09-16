@@ -38,7 +38,7 @@ class Writer {
     /**
      * Enables transliteration writing for form input elements
      * for indic languages.
-     * 
+     *
      * @param {HTMLElement} element Form input element to use for transliterations.
      * @param {*} language ISO 639-1 code of indic language.
      */
@@ -49,25 +49,25 @@ class Writer {
         this.caret = new InputCaret(this.element);
         this.element.addEventListener('keydown', this.processKeyStrokes.bind(this));
 
-        const availableTransliterators  = supportedLanguageTransliterators
+        const availableTransliterators = supportedLanguageTransliterators
             .filter(transliterator => language === transliterator.getLang());
 
         const isLanguageSupported = availableTransliterators.length !== 0;
-        
-        if(!isLanguageSupported){
+
+        if (!isLanguageSupported) {
             throw new Error(`${language} is not supported.`);
         }
 
         /**
-         * Transliterator which will be used for transliterating 
+         * Transliterator which will be used for transliterating
          * user input.
-         * 
-         * We pick first transliterator for transliterations. 
+         *
+         * We pick first transliterator for transliterations.
          */
         this.transliterator = availableTransliterators.shift();
 
         /**
-         * Waiting queue for words 
+         * Waiting queue for words
          * which needs to be transliterated.
          */
         this.transliterationQueue = [];
@@ -86,7 +86,7 @@ class Writer {
             menuItemTemplate: function (item) {
                 return item.original.value;
             },
-            noMatchTemplate : function (item) {
+            noMatchTemplate: function (item) {
                 return '';
             }
         });
@@ -97,15 +97,15 @@ class Writer {
     }
 
     /**
-     * Process keystrokes and determines 
+     * Process keystrokes and determines
      * wether to initiate transliteration or
      * not.
-     * @param {KeyboardEvent} event 
+     * @param {KeyboardEvent} event
      */
     processKeyStrokes(event) {
         /**
-         * We only want to process text once user has 
-         * finished typing a word. ie. when user has 
+         * We only want to process text once user has
+         * finished typing a word. ie. when user has
          * entered space or a white space char
          */
         const inputChar = event.key;
@@ -114,12 +114,12 @@ class Writer {
          */
         if ((/\s/.test(inputChar) || inputChar === 'Enter') && !this.suggestionEngine.isActive) {
             /**
-             * We will add every word to queue as it is 
-             * being typed and then we will loop over 
+             * We will add every word to queue as it is
+             * being typed and then we will loop over
              * them one by one and transliterate them.
              */
             this._updateTransliterationQueue();
-        }else if (inputChar === 'Backspace') {
+        } else if (inputChar === 'Backspace') {
             this.suggestionEngine.showMenuForCollection(this.element);
         }
 
@@ -129,32 +129,32 @@ class Writer {
     /**
      * Adds last typed word into transliteration queue.
      */
-    _updateTransliterationQueue(){
+    _updateTransliterationQueue() {
         const word = this.caret.lastWord();
         this.transliterationQueue.push(word);
     }
 
     /**
-     * Updates position of words in the queue 
+     * Updates position of words in the queue
      * after replacement by transliterator.
-     * 
-     * Often times transliterated strings have 
+     *
+     * Often times transliterated strings have
      * different lengths. This functions corrects
-     * those length errors. Iterating over the queue 
+     * those length errors. Iterating over the queue
      * and changing offsets.
-     * 
-     * @param {int} after Words with starting offset greater than 
+     *
+     * @param {int} after Words with starting offset greater than
      * this will see shift in position.
-     * 
+     *
      * @param {int} change Position shift of word.
      */
-    _updateQueueWordPositions(after, change){
+    _updateQueueWordPositions(after, change) {
         this.transliterationQueue.forEach(word => {
             /**
-             * We only modify words which come 
+             * We only modify words which come
              * after the word we transliterated.
              */
-            if(word.start >= after){
+            if (word.start >= after) {
                 word.start += change;
                 word.end += change;
             }
@@ -165,11 +165,11 @@ class Writer {
 
         const isTransliterationQueueEmpty = this.transliterationQueue.length === 0;
 
-        if(!isTransliterationQueueEmpty){
-            const word = this.transliterationQueue.shift();        
+        if (!isTransliterationQueueEmpty) {
+            const word = this.transliterationQueue.shift();
             const transliteration = await this.transliterator.transliterate(word.text);
             this.caret.replace(transliteration, word);
-            const change = transliteration.length  - word.text.length;
+            const change = transliteration.length - word.text.length;
             this._updateQueueWordPositions(word.end, change);
         }
 
@@ -177,21 +177,21 @@ class Writer {
          * We are going to increase wait
          * time for next call to 1000 microseconds
          * if `transliteration queue` is empty.
-         * 
+         *
          */
         let waitTime = 0;
-        if(isTransliterationQueueEmpty){
+        if (isTransliterationQueueEmpty) {
             waitTime = 1000;
         }
         /**
-         * We are not going to wait here 
+         * We are not going to wait here
          */
         setTimeout(this._transliterate.bind(this), waitTime);
     }
 
     /**
      * Suggests alternative transliteration for given word.
-     * @param {KeyboardEvent} event 
+     * @param {KeyboardEvent} event
      */
     async _suggestTransliterations(text, cb) {
         const word = this.caret.lastWord();
