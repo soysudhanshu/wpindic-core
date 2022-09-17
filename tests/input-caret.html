@@ -28,7 +28,7 @@
             margin: 0;
             padding: 0;
         }
-        
+
         .highlight{
             background: lightblue;
         }
@@ -36,8 +36,12 @@
     <script src="../dist/main.js"></script>
     <script>
         (() => {
-                const editorArea = document.querySelector('#editor');
-                const editor = new wpindic.Writer(editorArea);
+            const editorArea = document.querySelector('#editor');
+            const editor = new Indic.Writer(editorArea,
+                new Indic.LanguageTransliterator(
+                    new Indic.GoogleTransliterator('hi')
+                )
+            );
         })();
     </script>
 
