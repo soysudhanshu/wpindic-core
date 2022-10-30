@@ -1,6 +1,6 @@
 {
   "name": "wp-indic",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Writer for Indic Languages",
   "main": "src/index.js",
   "scripts": {
