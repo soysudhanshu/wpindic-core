@@ -1,6 +1,6 @@
 import Tribute from "tributejs";
 import { caretChooser } from "./Caret/helpers.js";
-import iFrameCaret from "./Caret/iframeCaret.js";
+import iFrameCaret from './Caret/IframeCaret.js';
 import InputCaret from "./Caret/InputCaret.js";
 
 class Writer {
