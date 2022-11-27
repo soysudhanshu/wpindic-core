@@ -1,11 +1,11 @@
 import InputCaret from './Caret/InputCaret.js';
-import GoogleTransliterator from './GoogleTransliterator.js';
 import LanguageTransliterator from './LanguageTransliterator.js';
+import TransliterationProvider from './TransliterationProvider.js';
 import Writer from './Writer.js';
 
 window.Indic = {
     Writer,
-    GoogleTransliterator,
+    TransliterationProvider,
     LanguageTransliterator,
     Writer,
     InputCaret,

@@ -39,7 +39,7 @@
             const editorArea = document.querySelector('#editor');
             const editor = new Indic.Writer(editorArea,
                 new Indic.LanguageTransliterator(
-                    new Indic.GoogleTransliterator('hi')
+                    new Indic.TransliterationProvider('hi')
                 )
             );
         })();
